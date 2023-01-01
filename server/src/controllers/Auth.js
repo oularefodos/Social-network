@@ -10,7 +10,8 @@ const register = async (req, res) => {
             email,
             password,
             picturePath,
-            friends,
+            followers,
+            following,
             location,
             impressions,
             viewProfile
@@ -23,7 +24,8 @@ const register = async (req, res) => {
             email,
             password : passwordHash,
             picturePath,
-            friends,
+            followers,
+            following,
             location,
             impressions,
             viewProfile
@@ -45,8 +47,8 @@ const login = async(req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) res.status(400).json({message: "bad Email or bad password"});
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
-        const id = user._id;
-        res.status(201).json({token, id});
+        user.password = undefined;
+        res.status(201).json({token, user});
     }
     catch(error) {
         res.status(500).json(error);
