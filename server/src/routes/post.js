@@ -6,6 +6,6 @@ const router = express.Router();
 router.get('/', verify, getPosts);
 router.get('/:userId', verify, getUserPost);
 router.patch('/like/:userId/:postId', verify, likeOrDislike);
-router.post("/:userId/createPost", verify, createPost);
+router.post("/create", verify, createPost);
 
 module.exports = router;

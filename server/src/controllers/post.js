@@ -2,9 +2,8 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 
 const createPost = async (req, res) => {
-    console.log(res.body);
     try {
-        const { userId } = req.params;
+        const userId = req.user.id;
         const {
             picturePath,
             description
