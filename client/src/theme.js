@@ -5,33 +5,33 @@ const configurationTheme = (mode) => ({
         ...(mode === "light" ?
         {
           primary : {
-            main : "#00a8ff",
+            main : "#82CAFA",
             dark : "##74b9ff",
             light : "#48dbfb"
           },
           secondary : {
-            main : "#55efc4",
-            light : "#ecf0f1",
-            dark : "#dcdde1"
+            main : "#f5f6fa",
+            light : "#F1F6F5",
+            dark : "#E8E2E2"
           }, 
           background : {
-            default : "#f5f6fa"
+            default : "#eeeeee"
           }
         }
         :
         {
           primary : {
-            main : "#00a8ff",
+            main : "#03224C",
             dark : "##74b9ff",
             light : "#48dbfb"
           },
           secondary : {
-            main : "#48dbfb",
-            light : "#f53b57",
-            dark : "#2d3436"
+            main : "#333333",
+            light : "#434242",
+            dark : "#03001C"
           },
           background : {
-            default : "#1e272e"
+            default : "#222222",
           }
         })
     },
