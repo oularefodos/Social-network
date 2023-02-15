@@ -43,9 +43,9 @@ const login = async(req, res) => {
     try {
         const {email, password} = req.body;
         const user = await User.findOne({email : email});
-        if (!user) res.status(400).json({message: "bad Email or bad password"});
+        if (!user) return res.status(400).json({message: "bad Email or bad password"});
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) res.status(400).json({message: "bad Email or bad password"});
+        if (!isMatch) return res.status(400).json({message: "bad Email or bad password"});
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
         user.password = undefined;
         res.status(201).json({token, user});
