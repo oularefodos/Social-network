@@ -3,14 +3,20 @@ import {
     useTheme,
     Typography,
     useMediaQuery,
+    Button,
 } from '@mui/material'
-import { height } from '@mui/system';
+import { useState } from 'react';
+import LoginForm from './loginForm';
+import SignupForm from './signupForm';
 
 export const Login = () => {
+
     const theme = useTheme();
     const isLargeScreen = useMediaQuery("(min-width: 900px)");
     const width = isLargeScreen ? "450px" : "80%" ;
-    console.log(theme.palette.secondary.dark);
+    const [isLoginPage, setIsLoginPage] = useState(false);
+    const changePageBtnName = isLoginPage ? ("Sign UP") : ("Login");
+
     return (
         <Box 
         sx={{
@@ -35,6 +41,10 @@ export const Login = () => {
                 SocialNetWork
             </Typography>
             <Box>
+                {
+                    isLoginPage ? <LoginForm/> : <SignupForm/>
+                }
+                <Button onClick={() => setIsLoginPage(!isLoginPage)}>{changePageBtnName}</Button>
             </Box>
         </Box>
     )
