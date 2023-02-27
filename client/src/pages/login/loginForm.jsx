@@ -2,7 +2,9 @@ import { Box, useTheme } from "@mui/system"
 import { Formik } from "formik";
 import * as yup from 'yup';
 import { TextField, Button } from '@mui/material';
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom'
+import {setLogin, setFollowed, setFollowers} from "../../reducer"
 
 const formSchema = yup.object().shape({
     email : yup.string().email("invalid").required("required"),
@@ -12,17 +14,45 @@ const formSchema = yup.object().shape({
 const initialState = ({
     email : "",
     password : ""
-})
+});
 
 const LoginForm = () => {
 
     const theme = useTheme();
-    const handleSubmit = () => {}
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleFormSubmit = async(values, onSubmitProps) => {
+        const {email, password} = values;
+
+        try {
+            const response = await fetch('http://localhost:3001/auth/login', {
+                method : 'POST',
+                body : JSON.stringify({email, password}),
+                headers : {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (response.ok) {
+                const user = await response.json();
+                dispatch(setLogin(user));
+                dispatch(setFollowed(user.following))
+                dispatch(setFollowers(user.followers))
+                navigate('/home')
+            }
+            else {
+                const error = await response.json();
+                console.log(error);
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <Formik
-            onSubmit={handleSubmit}
-            initialValues = {initialState}
-            validate = {formSchema}
+        onSubmit={handleFormSubmit}
+        initialValues = {initialState}
+        validationSchema = {formSchema}
         >
             {({
                 values,
@@ -31,9 +61,8 @@ const LoginForm = () => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
             }) => (
-                <form>
+                <form onSubmit={handleSubmit}>
                     <Box
                     sx={{ 
                         display: 'grid', 
@@ -48,6 +77,8 @@ const LoginForm = () => {
                             value={values.email}
                             onChange={handleChange}
                             name="email"
+                            error={Boolean(touched.email) && Boolean(errors.email)}
+                            helperText={touched.email && errors.email}
                         />
                         <TextField 
                             label="Password"
@@ -56,6 +87,8 @@ const LoginForm = () => {
                             onChange={handleChange}
                             name="password"
                             type="password"
+                            error={Boolean(touched.password) && Boolean(errors.password)}
+                            helperText={touched.password && errors.password}
                         />
                         <Button
                             fullWidth

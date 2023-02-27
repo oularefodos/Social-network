@@ -24,25 +24,28 @@ const initialState = ({
     location : ""
 })
 
-const SignupForm = () => {
+const SignupForm = ({setIsLoginPage}) => {
 
     const theme = useTheme();
-    const handleFormSubmit = async (values) => {
-        values['picturePath'] = values.picture.name;
+    const handleFormSubmit = async (values, onSubmitProps) => {
+        const formData = new FormData();
+
+        for (let value in values) {
+            formData.append(value, values[value]);
+        }
+
         try {
             const response = await fetch('http://localhost:3001/auth/register', {
                 method : 'POST',
-                mode: 'cors',
-                body : JSON.stringify(values),
-                headers:{
-                    'Content-Type': 'application/json'
-                }
+                body : formData
             });
-            const newUser = await response.json()
+            const newUser = await response.json();
+            setIsLoginPage(true);
         }
         catch (error) {
             console.log(error);
         }
+        onSubmitProps.resetForm();
     }
 
     return (
@@ -117,7 +120,7 @@ const SignupForm = () => {
                         />
                     <Box>
                         <Dropzone
-                            acceptedFiles=".jpeg, .jpg, .png"
+                            acceptedFiles=".jpeg,.jpg,.png"
                             multiple={false}
                             onDrop={(acceptedFiles) => setFieldValue("picture", acceptedFiles[0])}
                             >

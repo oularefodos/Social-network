@@ -14,7 +14,7 @@ export const Login = () => {
     const theme = useTheme();
     const isLargeScreen = useMediaQuery("(min-width: 900px)");
     const width = isLargeScreen ? "450px" : "80%" ;
-    const [isLoginPage, setIsLoginPage] = useState(false);
+    const [isLoginPage, setIsLoginPage] = useState(true);
     const changePageBtnName = isLoginPage ? ("I don't have a account, click to regiter") : ("Have you a account, click to Login ");
 
     return (
@@ -43,7 +43,7 @@ export const Login = () => {
             </Typography>
             <Box>
                 {
-                    isLoginPage ? <LoginForm/> : <SignupForm/>
+                    isLoginPage ? <LoginForm/> : <SignupForm setIsLoginPage={setIsLoginPage}/>
                 }
                 <Typography 
                     onClick={() => setIsLoginPage(!isLoginPage)}

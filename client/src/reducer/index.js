@@ -4,7 +4,8 @@ const initialState = {
     mode: "dark",
     user: null,
     token: null,
-    friends: null,
+    followers: null,
+    followed :  null,
     posts: null,
 };
 
@@ -23,9 +24,17 @@ export const userSlice = createSlice({
             state.user = null;
             state.token = null;
         },
-        setFriends(state, action) {
+        setFollowers(state, action) {
             if (state.user) {
-                state.friends = action.payload.friends;
+                state.followers = action.payload.followers;
+            }
+            else {
+                console.log("User does not exist");
+            }
+        },
+        setFollowed(state, action) {
+            if (state.user) {
+                state.followed = action.payload.followed;
             }
             else {
                 console.log("User does not exist");
@@ -46,5 +55,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setFriends, setLogin, setLogout, setMode, setPost, setPosts} = userSlice.actions;
+export const { setFollowers, setLogin, setFollowed, setLogout, setMode, setPost, setPosts} = userSlice.actions;
 export default userSlice.reducer;
