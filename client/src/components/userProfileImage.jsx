@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 
 export const UserProfileImage = ({size, imagePath}) => {
-    console.log(typeof(size))
     return (
         <Box
             style={{

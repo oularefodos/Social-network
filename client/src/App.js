@@ -17,7 +17,6 @@ function App() {
   const theme = useMemo(() => createTheme(configurationTheme(mode)), [mode]);
   const userToken = useSelector(state => state.token);
 
-  console.log(mode);
   return (
     <div className="app">
       <ThemeProvider theme={theme}>

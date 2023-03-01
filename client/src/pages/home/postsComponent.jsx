@@ -7,7 +7,8 @@ import { PostComponent } from "./postComponent";
 
 export const PostsComponent = () => {
     const token = useSelector(state => state.token);
-    const posts = useSelector(state => state.posts);
+    const newposts = useSelector(state => state.posts);
+    const posts = newposts;
     const dispatch = useDispatch();
     const getPosts = async() => {
         try {

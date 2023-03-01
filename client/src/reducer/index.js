@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     mode: "dark",
     user: null,
+    users: null,
     token: null,
     followers: null,
     followed :  null,
@@ -24,17 +25,19 @@ export const userSlice = createSlice({
             state.user = null;
             state.token = null;
         },
-        setFollowers(state, action) {
-            if (state.user) {
-                state.followers = action.payload.followers;
-            }
-            else {
-                console.log("User does not exist");
-            }
+        setUsers(state, action) {
+            state.users = action.payload.users;
         },
         setFollowed(state, action) {
             if (state.user) {
                 state.followed = action.payload.followed;
+                const users = state.posts.map(user => {
+                    if (user._id === action.payload.user._id) {
+                        return action.payload.user;
+                    }
+                    return users;
+                });
+                state.users = users;
             }
             else {
                 console.log("User does not exist");
@@ -55,5 +58,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setFollowers, setLogin, setFollowed, setLogout, setMode, setPost, setPosts} = userSlice.actions;
+export const { setLogin, setFollowed, setLogout, setMode, setUsers, setPost, setPosts} = userSlice.actions;
 export default userSlice.reducer;

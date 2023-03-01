@@ -6,9 +6,7 @@ import { Box,
 import { UserInfoFromHome } from './userInfoFromHome';
 import { ShareComponent } from './ShareComponent';
 import { PostsComponent } from './postsComponent';
-
-
-
+import { PostRecommend } from './userRecommender';
 
 export const Home = () => {
     const user = useSelector(state => state.user);
@@ -26,6 +24,7 @@ export const Home = () => {
             <Box 
                 sx={{
                     width : ismobile ? '100%' : '30%',
+                    position : 'relative'
                 }}
             >
                 <UserInfoFromHome> </UserInfoFromHome>
@@ -43,7 +42,7 @@ export const Home = () => {
                     width : ismobile ? '100%' : '30%',
                }} 
             >
-                {/* <UserInfoFromHome> </UserInfoFromHome> */}
+                <PostRecommend></PostRecommend>
             </Box>
         </Container>
     )

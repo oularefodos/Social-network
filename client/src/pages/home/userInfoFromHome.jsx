@@ -17,7 +17,7 @@ export const UserInfoFromHome = () => {
                 <Box 
                     display='flex' 
                     alignItems='center' 
-                    gap='2rem' 
+                    gap='2rem'
                     marginBottom='1rem'
                     flexWrap='wrap'
                 >

@@ -1,57 +1,54 @@
 import {
-    FavoriteBorder,
-    PersonAddAlt,
+    Favorite,
+    Send,
     Comment,
-    HowToReg,
-    HowToRegIcon
 } from "@mui/icons-material";
 import { Box, 
     Typography, 
-    useMediaQuery,
     useTheme,
-    Divider 
+    Divider, 
+    InputBase
 } from '@mui/material';
 import FlexComponent from "../../components/flexComponent";
 import WrapComponent from "../../components/wrapComponent";
 import { UserProfileImage } from "../../components/userProfileImage";
 import { useSelector, useDispatch  } from 'react-redux';
-import { setFollowed } from '../../reducer'
+import { setPost } from '../../reducer';
+import { useState } from "react";
+
 
 
 export const PostComponent = ({
     postId,
-    postUserId,
     userName,
     description,
-    location,
     picturePath,
     userPicturePath,
     likes,
     comments,
 }) => {
     const theme = useTheme()
-    const user = useSelector(state => state.user);
-    const followed = useSelector(state => state.followed);
+    const userId = useSelector(state =>  state.user._id);
+    const isLiked = Boolean(likes[userId])
+    const likesCount = Object.keys(likes).length;
     const token = useSelector(state => state.token);
     const dispatch = useDispatch();
-
-    const  followOrUnfollow = async () => {
+    const [commentIsOpen, setCommentIsOpen] = useState(false);
+    const likeOrDislik = async() => {
         try {
-            const response = await fetch(`http://localhost:3001/user/${user._id}/${postUserId}`, {
-                method : 'PATCH',
-                headers: { Authorization: `Bearer ${token}` },
-            })
-            if (response.ok) {
-                const newFollowing = await response.json();
-                dispatch(setFollowed({followed : newFollowing}));
-            }
-            else {
-                const error = await response.json();
-                console.log(error);
-            }
+            const response = await fetch(`http://localhost:3001/posts/like/${userId}/${postId}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                }
+            });
+            const newPost = await response.json();
+            dispatch(setPost({post : newPost}));
+
         }
         catch (error) {
-    
+            console.log(error)
         }
     }
 
@@ -62,7 +59,6 @@ export const PostComponent = ({
                     <UserProfileImage size='50px' imagePath={userPicturePath}></UserProfileImage>
                     <Typography>{userName}</Typography>
                 </Box>
-                {/* { !followed?.include(postUserId) ? <PersonAddAlt onClick={followOrUnfollow}/> : <HowToReg onClick={followOrUnfollow} /> } */}
             </FlexComponent>
             <Divider/>
             {
@@ -82,17 +78,51 @@ export const PostComponent = ({
                 )
             }
             <Divider />
-            <Box marginTop='1rem'>
+            <Box marginTop='1rem' marginBottom='1rem'>
                 <FlexComponent>
                     <Box display= 'flex'gap='0.5rem'>
-                        <FavoriteBorder/>
-                        <Comment/>
+                        { !isLiked ? 
+                            <Favorite onClick={likeOrDislik} />
+                            :
+                            <Favorite onClick={likeOrDislik} sx={{color : 'red'}} />
+                        }
+                        <Comment onClick={() => setCommentIsOpen(!commentIsOpen)}/>
                     </Box>
                     <Box display= 'flex'gap='0.5rem'>
                         <Typography>{comments.length} comments</Typography>
-                        <Typography>{comments.length} likes</Typography>
+                        <Typography>{likesCount} likes</Typography>
                     </Box>
                 </FlexComponent>
+            </Box>
+            <Divider />
+            <Box
+                sx={{
+                    marginTop : '1rem',
+                    display : commentIsOpen ? 'flex' : 'none',
+                    alignItems : 'center',
+                    gap : '0.5rem'
+                }}
+            >
+                <InputBase
+                    placeholder="Do you want to share something"
+                    sx={{
+                        bgcolor : theme.palette.background.default,
+                        width : '80%',
+                        height : '35px',
+                        padding : '1rem',
+                        borderRadius : '2rem'
+                    }}
+                >
+                </InputBase>
+                <Send 
+                    sx = {{
+                        color : theme.palette.primary.main,
+                        '&:hover': {
+                            color : 'blue',
+                            cursor : 'pointer'
+                        }
+                    }}
+                />
             </Box>
         </WrapComponent>
     )

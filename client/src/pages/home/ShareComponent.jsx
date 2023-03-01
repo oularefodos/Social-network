@@ -24,7 +24,6 @@ export const ShareComponent = () => {
         const form = new FormData();
         form.append('picture', picture);
         form.append('description', description);
-        console.log(picture);
         try {
             const response = await fetch ('http://localhost:3001/posts/create', {
                 method : 'POST',
@@ -41,7 +40,6 @@ export const ShareComponent = () => {
             }
             setDescription('');
             setImgImput(null);
-            console.log(imgInput)
         }
         catch (error) {
             console.log(error)

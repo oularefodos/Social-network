@@ -13,7 +13,8 @@ import {
     LightMode,
     Notifications,
     Logout,
-    Help,
+    Home,
+    Person,
     Menu,
     Close
 } from "@mui/icons-material";
@@ -29,10 +30,16 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const isLargeScreen = useMediaQuery("(min-width: 900px)");
     const user = useSelector((state)=> state?.user);
+    const token = useSelector((state)=> state?.token);
     const userFullname = `${user?.firstName} ${user?.lastName}`;
     const theme = useTheme();
     const bckMobileMenu = theme.palette.secondary.light;
 
+    const HandleIconClick = (path) =>  {
+        navigate(path);
+        setMenuIsOpen(!menuIsOpen);
+    }
+    if (!token) return <Box></Box>
     return (
         <FlexComponent padding="1rem 6%" backgroundColor={theme.palette.primary.main}>
             <FlexComponent>
@@ -47,13 +54,21 @@ export const Navbar = () => {
               {
                 (isLargeScreen) ? (
                     <FlexComponent color="white" gap="2rem">
-                        <Message/>
-                        <Notifications/>
-                        <Help/>
+                        <IconButton>
+                            <Home/>
+                        </IconButton>
+                        <IconButton>
+                            <Message />
+                        </IconButton>
+                        <IconButton>
+                            <Person/>
+                        </IconButton>
                         <IconButton onClick={() => dispatch(setMode())}>
                             {theme.palette.mode === "dark" ? <LightMode/> : <DarkMode/>}
                         </IconButton> 
-                        <Logout onClick={() => dispatch(setLogout())}/>
+                        <IconButton>
+                            <Logout onClick={() => dispatch(setLogout())}/>
+                        </IconButton>
                     </FlexComponent>
                 ) :
                 (
@@ -71,7 +86,7 @@ export const Navbar = () => {
                             bottom : "0",
                             height : "100%",
                             zIndex: "10",
-                            minWidth : "240px",
+                            minWidth : "100%",
                             maxWidth : "540px",
                         }}
                         backgroundColor = {bckMobileMenu}
@@ -89,13 +104,24 @@ export const Navbar = () => {
                             marginTop : "1rem",
                             gap : "2rem"
                         }}>
-                            <Message/>
-                            <Notifications/>
-                            <Help/>
-                            <IconButton onClick={() => dispatch(setMode())}>
+                            <IconButton onClick={() => HandleIconClick("/home")}>
+                                <Home/>
+                            </IconButton>
+                            <IconButton onClick={() => HandleIconClick("/home") }>
+                                <Message />
+                            </IconButton >
+                            <IconButton onClick={() => HandleIconClick("/home") }>
+                                <Person/>
+                            </IconButton>
+                            <IconButton onClick={() => {
+                                dispatch(setMode());
+                                setMenuIsOpen(!menuIsOpen);
+                            }}>
                                 {theme.palette.mode === "dark" ? <LightMode/> : <DarkMode/>}
                             </IconButton> 
-                            <Logout/>
+                            <IconButton>
+                                <Logout onClick={() => dispatch(setLogout())}/>
+                            </IconButton>
                         </Box>
                     </Box>
                 )
