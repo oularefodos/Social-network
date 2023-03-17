@@ -1,13 +1,10 @@
 
 import WrapComponent from "../../components/wrapComponent"
 import { useSelector, useDispatch  } from 'react-redux';
-import { PersonAdd, PersonRemove } from "@mui/icons-material"
-import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
+import { useTheme, Box } from '@mui/material';
 import { setUsers } from "../../reducer"
-import { UserProfileImage } from "../../components/userProfileImage";
-import FlexComponent from "../../components/flexComponent";
 import { useEffect } from "react";
-
+import { Friend } from "../../components/Freind";
 
 export const PostRecommend = () => {
     const users = useSelector(state => state.users);
@@ -15,7 +12,7 @@ export const PostRecommend = () => {
     const userId = useSelector(state => state.user._id);
     const dispatch = useDispatch();
     const theme = useTheme();
-    const userUnfollow = users;
+    const userUnfollow = users?.filter(user => !user?.followers?.includes(userId) && user._id !== userId);
 
     const  getAllUser =  async() => {
         try {
@@ -39,16 +36,11 @@ export const PostRecommend = () => {
             {
                 userUnfollow?.map(user => (
                     <Box key={user._id}>
-                        <FlexComponent marginTop = '1rem' marginBottom='1rem'>
-                            <Box display = 'flex' gap='1rem' alignItems='center'>
-                                <UserProfileImage size='50px' imagePath={user.picturePath}></UserProfileImage>
-                                <Typography>{user.firstName} {user.lastName}</Typography>
-                            </Box>
-                                 <IconButton>
-                          <PersonAdd></PersonAdd>
-                                </IconButton>
-                        </FlexComponent>
-                      <Divider/>
+                        <Friend 
+                        profileImage={user.picturePath}
+                        name={`${user.firstName} ${user.lastName}`} 
+                        friendId = {user._id}
+                        ></Friend>
                     </Box>
                 ))
             }

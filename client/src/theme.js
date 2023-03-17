@@ -15,7 +15,7 @@ const configurationTheme = (mode) => ({
             dark : "#E8E2E2"
           }, 
           background : {
-            default : "#eeeeee",
+            default : "#dfe6e9",
             alt : "#000000"
           }
         }

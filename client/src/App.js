@@ -8,6 +8,7 @@ import { createTheme, ThemeProvider} from "@mui/material/styles"
 import CssBaseline from '@mui/material/CssBaseline';
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
+import { PageNotFound } from "./pages/Error/404";
 
 
 
@@ -25,8 +26,9 @@ function App() {
           <Navbar/>
           <Routes>
             <Route path="/" element={ <Login/> }/>
-            <Route path="/profile/:userID" element={userToken ? <Profile/> : <Navigate to='/'/>} />
+            <Route path="/profile/:userId" element={userToken ? <Profile/> : <Navigate to='/'/>} />
             <Route path="/home" element={ userToken ? <Home/> : <Navigate to='/'/>}/>
+            <Route path="*" element={<PageNotFound/>}></Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

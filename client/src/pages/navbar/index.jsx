@@ -11,7 +11,6 @@ import {
     Message,
     DarkMode,
     LightMode,
-    Notifications,
     Logout,
     Home,
     Person,
@@ -31,7 +30,6 @@ export const Navbar = () => {
     const isLargeScreen = useMediaQuery("(min-width: 900px)");
     const user = useSelector((state)=> state?.user);
     const token = useSelector((state)=> state?.token);
-    const userFullname = `${user?.firstName} ${user?.lastName}`;
     const theme = useTheme();
     const bckMobileMenu = theme.palette.secondary.light;
 
@@ -39,7 +37,8 @@ export const Navbar = () => {
         navigate(path);
         setMenuIsOpen(!menuIsOpen);
     }
-    if (!token) return <Box></Box>
+
+    if (!token && !user) return <Box></Box>
     return (
         <FlexComponent padding="1rem 6%" backgroundColor={theme.palette.primary.main}>
             <FlexComponent>
@@ -54,20 +53,20 @@ export const Navbar = () => {
               {
                 (isLargeScreen) ? (
                     <FlexComponent color="white" gap="2rem">
-                        <IconButton>
+                        <IconButton onClick={() => navigate("/home")}>
                             <Home/>
                         </IconButton>
                         <IconButton>
                             <Message />
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={() => navigate(`/profile/${user._id}`)}>
                             <Person/>
                         </IconButton>
                         <IconButton onClick={() => dispatch(setMode())}>
                             {theme.palette.mode === "dark" ? <LightMode/> : <DarkMode/>}
                         </IconButton> 
-                        <IconButton>
-                            <Logout onClick={() => dispatch(setLogout())}/>
+                        <IconButton  onClick={() => dispatch(setLogout())}>
+                            <Logout/>
                         </IconButton>
                     </FlexComponent>
                 ) :

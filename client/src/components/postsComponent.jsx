@@ -1,14 +1,12 @@
 
 import { Box } from '@mui/material';
 import { useSelector, useDispatch  } from 'react-redux';
-import { setPosts } from '../../reducer'
+import { setPosts } from '../reducer'
 import { useEffect} from "react";
 import { PostComponent } from "./postComponent";
 
-export const PostsComponent = () => {
+export const PostsComponent = ({posts}) => {
     const token = useSelector(state => state.token);
-    const newposts = useSelector(state => state.posts);
-    const posts = newposts;
     const dispatch = useDispatch();
     const getPosts = async() => {
         try {
@@ -18,7 +16,6 @@ export const PostsComponent = () => {
             if (response.ok) {
                 const allPosts = await response.json();
                 dispatch(setPosts({posts : allPosts}));
-                console.log(posts)
             }
             else {
                 const error = await response.json();

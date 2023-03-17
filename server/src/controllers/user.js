@@ -12,9 +12,20 @@ const getUser = async (req, res) => {
     }
 }
 
+const getUsers = async (req, res) => {
+    try {
+        const users = await  User.find();
+        res.status(201).json(users);
+    }
+    catch(error) {
+        res.status(401).json({message: error.message});
+    }
+}
+
 const getUserFollowers = async(req, res) => {
     try {
         const { id } = req.params;
+        console.log(id);
         const user = await User.findById(id);
         if (!user) return res.status(401).json({message: 'User not found'});
         const followersId = user.followers;
@@ -51,6 +62,7 @@ const getUserfollowing = async(req, res) => {
 const followOrUnfollow = async (req, res) => {
     try {
         const {id, friendsId} = req.params;
+        if (id === friendsId) return res.status(401).json({message: 'You can not follow yourself'});
         const user = await User.findById(id);
         const friend = await User.findById(friendsId);
         if (!user || !friend) return res.status(401).json({message: 'User not found'});
@@ -59,6 +71,7 @@ const followOrUnfollow = async (req, res) => {
             friend.followers = friend.followers.filter(_id => _id !== id);
         }
         else {
+            
             user.following.push(friendsId);
             friend.followers.push(id);
         }
@@ -67,14 +80,13 @@ const followOrUnfollow = async (req, res) => {
         const followingId = user.following;
         const following = await Promise.all(followingId.map((id) => User.findById(id)));
         const Newfollowing = following.map(user => {
-            const {firstName, lastName, email, location, picturePath} = user;
-            return {firstName, lastName, email, location, picturePath};
+            return user._id;
         })
-        res.status(201).json(Newfollowing);
+        res.status(201).json({followed : Newfollowing, user : friend});
     }
     catch(error) {
         res.status(401).json({message: error.message});
     }
 }
 
-module.exports = {getUser, getUserFollowers, followOrUnfollow, getUserfollowing};
+module.exports = {getUser, getUserFollowers, followOrUnfollow, getUserfollowing, getUsers};

@@ -7,19 +7,20 @@ import { Box,
     Typography, 
     useTheme,
     Divider, 
-    InputBase
+    InputBase,
 } from '@mui/material';
-import FlexComponent from "../../components/flexComponent";
-import WrapComponent from "../../components/wrapComponent";
-import { UserProfileImage } from "../../components/userProfileImage";
+import FlexComponent from "./flexComponent";
+import WrapComponent from "./wrapComponent";
 import { useSelector, useDispatch  } from 'react-redux';
-import { setPost } from '../../reducer';
+import { setPost } from '../reducer';
 import { useState } from "react";
+import { Friend } from "./Freind";
 
 
 
 export const PostComponent = ({
     postId,
+    postUserId,
     userName,
     description,
     picturePath,
@@ -28,12 +29,14 @@ export const PostComponent = ({
     comments,
 }) => {
     const theme = useTheme()
-    const userId = useSelector(state =>  state.user._id);
+    const user = useSelector(state =>  state.user);
+    const userId = user._id;
     const isLiked = Boolean(likes[userId])
     const likesCount = Object.keys(likes).length;
     const token = useSelector(state => state.token);
     const dispatch = useDispatch();
     const [commentIsOpen, setCommentIsOpen] = useState(false);
+    
     const likeOrDislik = async() => {
         try {
             const response = await fetch(`http://localhost:3001/posts/like/${userId}/${postId}`, {
@@ -54,12 +57,12 @@ export const PostComponent = ({
 
     return (
         <WrapComponent backgroundColor={theme.palette.secondary.main}>
-            <FlexComponent>
-                <Box display='flex' alignItems='center' gap='1rem' marginBottom='1rem'>
-                    <UserProfileImage size='50px' imagePath={userPicturePath}></UserProfileImage>
-                    <Typography>{userName}</Typography>
-                </Box>
-            </FlexComponent>
+            <Friend 
+                profileImage={userPicturePath}
+                name={userName}
+                friendId={postUserId}
+            >
+            </Friend>
             <Divider/>
             {
                 description && (

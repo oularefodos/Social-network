@@ -1,16 +1,17 @@
-import { useSelector } from 'react-redux';
 import { Box,
          Container, 
          useMediaQuery 
         } from '@mui/material';
 import { UserInfoFromHome } from './userInfoFromHome';
 import { ShareComponent } from './ShareComponent';
-import { PostsComponent } from './postsComponent';
+import { PostsComponent } from '../../components/postsComponent';
 import { PostRecommend } from './userRecommender';
+import { useSelector } from 'react-redux';
 
 export const Home = () => {
-    const user = useSelector(state => state.user);
+
     const ismobile = useMediaQuery("(max-width: 900px)")
+    const posts = useSelector(state => state.posts);
     return (
         <Container 
         maxWidth='lg' 
@@ -24,10 +25,9 @@ export const Home = () => {
             <Box 
                 sx={{
                     width : ismobile ? '100%' : '30%',
-                    position : 'relative'
                 }}
             >
-                <UserInfoFromHome> </UserInfoFromHome>
+                <UserInfoFromHome > </UserInfoFromHome>
             </Box>
             <Box
                 sx={{
@@ -35,7 +35,7 @@ export const Home = () => {
                 }}
             >
                 <ShareComponent></ShareComponent>
-                <PostsComponent></PostsComponent>
+                <PostsComponent posts={posts}></PostsComponent>
             </Box>
             <Box
                sx={{

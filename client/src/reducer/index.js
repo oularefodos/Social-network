@@ -4,9 +4,8 @@ const initialState = {
     mode: "dark",
     user: null,
     users: null,
+    followers : null,
     token: null,
-    followers: null,
-    followed :  null,
     posts: null,
 };
 
@@ -17,25 +16,30 @@ export const userSlice = createSlice({
         setMode(state) {
             state.mode = state.mode === "light" ? "dark" : "light";
         },
+        setUser(state, action) {
+            state.user = action.payload.user;
+        },
         setLogin(state, action) {
             state.user = action.payload.user;
             state.token = action.payload.token;
         },
         setLogout(state) {
             state.user = null;
+            state.users = null;
             state.token = null;
+            state.posts = null;
         },
         setUsers(state, action) {
             state.users = action.payload.users;
         },
         setFollowed(state, action) {
             if (state.user) {
-                state.followed = action.payload.followed;
-                const users = state.posts.map(user => {
+                state.user.following = action.payload.followed;
+                const users = state.users.map(user => {
                     if (user._id === action.payload.user._id) {
                         return action.payload.user;
                     }
-                    return users;
+                    return user;
                 });
                 state.users = users;
             }
@@ -44,7 +48,12 @@ export const userSlice = createSlice({
             }
         },
         setPosts(state, action) {
-            state.posts = action.payload.posts;
+            state.posts = action.payload.posts.reverse();
+        },
+        setFollowers(state, action) {
+            if (state.user) {
+                state = action.payload.posts;
+            }
         },
         setPost(state, action) {
             const posts = state.posts.map(post => {
@@ -58,5 +67,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setLogin, setFollowed, setLogout, setMode, setUsers, setPost, setPosts} = userSlice.actions;
+export const { setLogin, setFollowed, setFollowers, setLogout, setMode, setUsers, setUser, setPost, setPosts} = userSlice.actions;
 export default userSlice.reducer;

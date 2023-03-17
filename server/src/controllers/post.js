@@ -21,7 +21,8 @@ const createPost = async (req, res) => {
             likes : {}
         });
         await post.save();
-        res.status(201).json(post);
+        const posts = await Post.find();
+        res.status(201).json(posts);
     }
     catch (error) {
         res.status(501).json({message: error.message});
@@ -56,7 +57,6 @@ const likeOrDislike = async(req, res) => {
         const post = await Post.findById(postId);
         if (post.likes.get(userId)) {
             post.likes.delete(userId);
-            console.log(post);
         }
         else {
             post.likes.set(userId, true);

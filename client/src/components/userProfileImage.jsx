@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 
 export const UserProfileImage = ({size, imagePath}) => {
+
     return (
         <Box
             style={{
@@ -12,7 +13,8 @@ export const UserProfileImage = ({size, imagePath}) => {
                 style={{
                     borderRadius : '50%',
                     height : size,
-                    width : size
+                    width : size,
+                    overflow: "hidden",
                 }}
                 src = {imagePath}
             >
