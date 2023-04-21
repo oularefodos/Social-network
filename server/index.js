@@ -21,7 +21,7 @@ app.use("/assets", express.static(path.join(__dirname, "public/uploads")));
 
 const port = process.env.PORT;
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.MONGO_URL,
+mongoose.connect(process.env.DATABASE_URL,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true

@@ -31,8 +31,8 @@ const getUserFollowers = async(req, res) => {
         const followersId = user.followers;
         const followers = await Promise.all(followersId.map((id) => User.findById(id)));
         const Newfollowers = followers.map(user => {
-            const {firstName, lastName, email, location, picturePath} = user;
-            return {firstName, lastName, email, location, picturePath};
+            const {firstName, lastName, email, location, picturePath, _id} = user;
+            return {firstName, lastName, email, location, picturePath, _id};
         })
         res.status(201).json(Newfollowers);
     }
@@ -49,8 +49,8 @@ const getUserfollowing = async(req, res) => {
         const followingId = user.following;
         const following = await Promise.all(followingId.map((id) => User.findById(id)));
         const Newfollowing = following.map(user => {
-            const {firstName, lastName, email, location, picturePath} = user;
-            return {firstName, lastName, email, location, picturePath};
+            const {firstName, lastName, email, location, picturePath, _id} = user;
+            return {firstName, lastName, email, location, picturePath, _id};
         })
         res.status(201).json(Newfollowing);
     }
