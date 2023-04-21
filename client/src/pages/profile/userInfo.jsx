@@ -1,10 +1,12 @@
 import WrapComponent from "../../components/wrapComponent"
-import { useTheme, Box, useMediaQuery, Typography, Button, Modal } from '@mui/material'
+import { useTheme, Box, useMediaQuery, Typography, Button, Dialog, DialogContent } from '@mui/material'
 import { UserProfileImage } from "../../components/userProfileImage";
 import { useSelector, useDispatch } from 'react-redux';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { setFollowed } from "../../reducer";
 import { useState } from "react";
+import { Followers } from "./followers";
+import { Following } from './followings'
 
 export const UserInfo = ({ imagePath, name, followed, followers, userId, location, NumberPub }) => {
 
@@ -17,7 +19,8 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
     const token = useSelector(state => state.token);
     const istAFollowed = visitor.following.includes(userId);
     const isMine = visitorId === userId;
-    const handleClose = () => setOpen(!open);
+    const handleClose = () => setOpen(false);
+    const [followersOrFollowing, setfollowersOrFollowing] = useState('');
     
     const followAndUnfollow = async() => {
         try {
@@ -40,7 +43,11 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
             console.log(error);
         }
     }
-
+    const showFriends = (params) => {
+        setOpen(true);
+        setfollowersOrFollowing(params)
+        console.log(followersOrFollowing);
+    }
     return (
         <WrapComponent backgroundColor={theme.palette.secondary.main}>
             <Box sx={{
@@ -64,12 +71,14 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                                 fontFamily: "monospace",
                                 fontSize: "20px"
                             }}
-                        >{followed?.length} followed </Typography>
+                            onClick = {() => showFriends('following')}
+                        >{followed?.length} following </Typography>
                         <Typography
                             sx={{
                                 fontFamily: "monospace",
                                 fontSize: "18px"
                             }}
+                            onClick = {() => showFriends('followers')}
                         >{followers?.length} followers </Typography>
                         <Typography
                             sx={{
@@ -100,6 +109,37 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                     <Typography> <LocationOnIcon/> {location} </Typography>
                 </Box>
             </Box>
+            <Dialog
+                open = {open}
+                onClose={handleClose}
+                sx= {{
+                    width : "100%",
+                    margin : "auto",
+                    height : "auto"
+                }}
+            >
+
+                <DialogContent
+                    sx= {{
+                        width : "100%"
+                    }}
+                >
+                    {  
+                        followersOrFollowing == "following" ? (
+                        <Following 
+                            userId={userId}
+                        >
+                        </Following>  )
+                        : 
+                        (
+                            <Followers
+                                userId={userId}
+                            >
+                            </Followers>
+                        )
+                    }   
+                </DialogContent>
+            </Dialog>
         </WrapComponent>
     )
 }

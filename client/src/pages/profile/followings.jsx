@@ -3,24 +3,26 @@ import { Box, useTheme } from "@mui/system";
 import { useSelector } from "react-redux"
 import { Friend } from "../../components/Freind";
 import WrapComponent from "../../components/wrapComponent";
+import { Margin } from "@mui/icons-material";
 
 
-export const Followers = ({userId}) => {
+export const Following = ({userId}) => {
 
-    const [followers, setFollowers] = useState(null);
+    const [following, setFollowing] = useState(null);
     const token = useSelector(state => state.token);
     const theme = useTheme();
 
-    const getFollowers = async () => {
+    const getFollowing = async () => {
+        console.log(userId)
         try {
-            const response = await fetch(`http://localhost:3001/user/${userId}/followers`, {
+            const response = await fetch(`http://localhost:3001/user/${userId}/following`, {
                 headers : {
                     Authorization: `Bearer ${token}`
                 }
             });
             const UserFollowers = await response.json();
             console.log(UserFollowers, "fode")
-            setFollowers(UserFollowers);
+            setFollowing(UserFollowers);
         }
         catch (error) {
             console.log(error);
@@ -28,18 +30,18 @@ export const Followers = ({userId}) => {
     }
 
     useEffect(() => {
-        getFollowers();
+        getFollowing();
     }, [])
 
     return (
         <WrapComponent backgroundColor={theme.palette.secondary.main}>
             {
-                followers?.map( (user) => (
-                    <Box key={user._id}>
+                following?.map( ({picturePath, firstName, lastName, _id}) => (
+                    <Box key={_id}>
                         <Friend
-                            profileImage={user.picturePath}
-                            name={`${user.firstName} ${user.lastName}`}
-                            friendId={user._id}
+                            profileImage={picturePath}
+                            name={`${firstName} ${lastName}`}
+                            friendId={_id}
                         >
                         </Friend>
                     </Box>
