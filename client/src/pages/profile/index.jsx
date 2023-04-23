@@ -22,7 +22,6 @@ export const Profile = () => {
     const [profileOwner, setProfileOwner] = useState(null);
     const profileOwnerPost = posts.filter(post => post.userId === userId)
 
-
     const getUser = async() => {
         try {
             const response = await fetch (`http://localhost:3001/user/${userId}`, {
@@ -30,7 +29,7 @@ export const Profile = () => {
             })
             if (response.ok) {
                 const user = await response.json();
-                console.log(user)
+                console.log(user);
                 setProfileOwner(user);
             }
         }

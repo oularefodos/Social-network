@@ -50,7 +50,9 @@ export const Friend = ({
                         "&:hover": {
                             color : "blue",
                             cursor : "pointer"
-                        }
+                        },
+                        fontWeight:"bold",
+                        textTransform : "uppercase"
                     }}
                 >
                     {name}

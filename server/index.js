@@ -15,7 +15,8 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
-app.use(cors())
+const CorsOrigin = {origin : "*"}
+app.use(cors(CorsOrigin))
 app.use("/assets", express.static(path.join(__dirname, "public/uploads")));
 /* Mongo db config */
 

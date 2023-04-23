@@ -16,7 +16,7 @@ const initialState = ({
     password : ""
 });
 
-const LoginForm = () => {
+const LoginForm = ({setOpen, setMessage}) => {
 
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -35,11 +35,12 @@ const LoginForm = () => {
             if (response.ok) {
                 const user = await response.json();
                 dispatch(setLogin(user));
-                navigate('/home')
+                navigate('/home');
             }
             else {
                 const error = await response.json();
-                console.log(error);
+                setMessage(error.message);
+                setOpen(true);
             }
         }
         catch (error) {

@@ -61,7 +61,7 @@ export const UserInfoFromHome = () => {
                         {user.followers.length}
                     </Typography>
                     <Typography>
-                        Followers
+                        followers
                     </Typography>
                 </Box>
                 <Box marginBottom='1rem' marginTop='1rem'>
@@ -69,7 +69,7 @@ export const UserInfoFromHome = () => {
                         {user.following.length}
                     </Typography>
                     <Typography>
-                        Following
+                       followeds
                     </Typography>
                 </Box>
                 <Box marginBottom='1rem' marginTop='1rem'>
@@ -82,9 +82,6 @@ export const UserInfoFromHome = () => {
                 </Box>
             </Box>
             <Divider/>
-            <Box>
-
-            </Box>
         </WrapComponent>
     )
 }

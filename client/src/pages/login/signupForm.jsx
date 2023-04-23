@@ -24,12 +24,11 @@ const initialState = ({
     location : ""
 })
 
-const SignupForm = ({setIsLoginPage}) => {
+const SignupForm = ({setIsLoginPage, setMessage, setOpen}) => {
 
     const theme = useTheme();
     const handleFormSubmit = async (values, onSubmitProps) => {
         const formData = new FormData();
-
         for (let value in values) {
             formData.append(value, values[value]);
         }
@@ -39,11 +38,22 @@ const SignupForm = ({setIsLoginPage}) => {
                 method : 'POST',
                 body : formData
             });
-            const newUser = await response.json();
-            setIsLoginPage(true);
+            if (response.ok)
+            {
+                setIsLoginPage(true);
+            }
+            else
+            {
+                const error = await response.json();
+                if (error.keyValue.email)
+                {
+                    setMessage("email already used");
+                    setOpen(true);
+                }
+            }
         }
         catch (error) {
-            console.log(error);
+            // console.log(error)
         }
         onSubmitProps.resetForm();
     }
@@ -87,8 +97,8 @@ const SignupForm = ({setIsLoginPage}) => {
                             value={values.lastName}
                             onChange={handleChange}
                             name="lastName"
-                            error={Boolean(touched.firstName) && Boolean(errors.firstName)}
-                            helperText={touched.firstName && errors.firstName}
+                            error={Boolean(touched.lastName) && Boolean(errors.lastName)}
+                            helperText={touched.lastName && errors.lastName}
                         />
                         <TextField 
                             label="Email"
@@ -96,8 +106,8 @@ const SignupForm = ({setIsLoginPage}) => {
                             value={values.email}
                             onChange={handleChange}
                             name="email"
-                            error={Boolean(touched.firstName) && Boolean(errors.firstName)}
-                            helperText={touched.firstName && errors.firstName}
+                            error={Boolean(touched.email) && Boolean(errors.email)}
+                            helperText={touched.email && errors.email}
                         />
                         <TextField 
                             label="Password"
@@ -106,8 +116,8 @@ const SignupForm = ({setIsLoginPage}) => {
                             onChange={handleChange}
                             name="password"
                             type="password"
-                            error={Boolean(touched.firstName) && Boolean(errors.firstName)}
-                            helperText={touched.firstName && errors.firstName}
+                            error={Boolean(touched.password) && Boolean(errors.password)}
+                            helperText={touched.password && errors.password}
                         />
                         <TextField 
                             label="Location"
@@ -115,8 +125,8 @@ const SignupForm = ({setIsLoginPage}) => {
                             value={values.location}
                             onChange={handleChange}
                             name="location"
-                            error={Boolean(touched.firstName) && Boolean(errors.firstName)}
-                            helperText={touched.firstName && errors.firstName}
+                            error={Boolean(touched.location) && Boolean(errors.location)}
+                            helperText={touched.location && errors.location}
                         />
                     <Box>
                         <Dropzone

@@ -1,13 +1,11 @@
 import {
     Favorite,
-    Send,
     Comment,
 } from "@mui/icons-material";
 import { Box, 
     Typography, 
     useTheme,
     Divider, 
-    InputBase,
 } from '@mui/material';
 import FlexComponent from "./flexComponent";
 import WrapComponent from "./wrapComponent";
@@ -15,6 +13,9 @@ import { useSelector, useDispatch  } from 'react-redux';
 import { setPost } from '../reducer';
 import { useState } from "react";
 import { Friend } from "./Freind";
+import { CommentForm } from "./commentForm";
+import { Comments } from "./comments";
+import { MyModal } from "./modalComponent";
 
 
 
@@ -35,6 +36,7 @@ export const PostComponent = ({
     const likesCount = Object.keys(likes).length;
     const token = useSelector(state => state.token);
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
     const [commentIsOpen, setCommentIsOpen] = useState(false);
     
     const likeOrDislik = async() => {
@@ -66,7 +68,7 @@ export const PostComponent = ({
             <Divider/>
             {
                 description && (
-                    <Box marginTop = '1rem'>
+                                <Box marginTop = '1rem' fontFamily="monospace">
                         <Typography>
                             {description}
                         </Typography>
@@ -92,41 +94,17 @@ export const PostComponent = ({
                         <Comment onClick={() => setCommentIsOpen(!commentIsOpen)}/>
                     </Box>
                     <Box display= 'flex'gap='0.5rem'>
-                        <Typography>{comments.length} comments</Typography>
+                        <Typography onClick={() => setOpen(true)}>{comments.length} comments</Typography>
                         <Typography>{likesCount} likes</Typography>
                     </Box>
                 </FlexComponent>
             </Box>
             <Divider />
-            <Box
-                sx={{
-                    marginTop : '1rem',
-                    display : commentIsOpen ? 'flex' : 'none',
-                    alignItems : 'center',
-                    gap : '0.5rem'
-                }}
-            >
-                <InputBase
-                    placeholder="Do you want to share something"
-                    sx={{
-                        bgcolor : theme.palette.background.default,
-                        width : '80%',
-                        height : '35px',
-                        padding : '1rem',
-                        borderRadius : '2rem'
-                    }}
-                >
-                </InputBase>
-                <Send 
-                    sx = {{
-                        color : theme.palette.primary.main,
-                        '&:hover': {
-                            color : 'blue',
-                            cursor : 'pointer'
-                        }
-                    }}
-                />
-            </Box>
+            <CommentForm postId={postId} commentIsOpen={commentIsOpen}></CommentForm>
+            <MyModal open={open} setOpen={setOpen} title="comments">
+                <Comments comments={comments}></Comments>
+                <CommentForm postId={postId} commentIsOpen={true}></CommentForm>
+            </MyModal>
         </WrapComponent>
     )
 }

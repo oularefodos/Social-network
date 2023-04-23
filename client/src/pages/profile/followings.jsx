@@ -6,14 +6,13 @@ import WrapComponent from "../../components/wrapComponent";
 import { Margin } from "@mui/icons-material";
 
 
-export const Following = ({userId}) => {
+export const Followed = ({userId}) => {
 
-    const [following, setFollowing] = useState(null);
+    const [followeds, setFolloweds] = useState(null);
     const token = useSelector(state => state.token);
     const theme = useTheme();
 
     const getFollowing = async () => {
-        console.log(userId)
         try {
             const response = await fetch(`http://localhost:3001/user/${userId}/following`, {
                 headers : {
@@ -21,8 +20,7 @@ export const Following = ({userId}) => {
                 }
             });
             const UserFollowers = await response.json();
-            console.log(UserFollowers, "fode")
-            setFollowing(UserFollowers);
+            setFolloweds(UserFollowers);
         }
         catch (error) {
             console.log(error);
@@ -36,7 +34,7 @@ export const Following = ({userId}) => {
     return (
         <WrapComponent backgroundColor={theme.palette.secondary.main}>
             {
-                following?.map( ({picturePath, firstName, lastName, _id}) => (
+               followeds?.map( ({picturePath, firstName, lastName, _id}) => (
                     <Box key={_id}>
                         <Friend
                             profileImage={picturePath}

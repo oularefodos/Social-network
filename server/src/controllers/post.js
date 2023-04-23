@@ -42,7 +42,9 @@ const getPosts = async (req, res) => {
 
 const getUserPost = async(req, res) => {
     try {
+        const id = req.user.id;
         const { userId } = req.params;
+        if (id != userId) return res.status(501).json({message : "permission denied"});
         const posts = await Post.find({ userId });
         res.status(200).json(posts);
     }
@@ -53,7 +55,9 @@ const getUserPost = async(req, res) => {
 
 const likeOrDislike = async(req, res) => {
     try {
+        const id = req.user.id;
         const { userId, postId } = req.params;
+        if (id != userId) return res.status(501).json({message : "permission denied"});
         const post = await Post.findById(postId);
         if (post.likes.get(userId)) {
             post.likes.delete(userId);
@@ -69,9 +73,31 @@ const likeOrDislike = async(req, res) => {
     }
 }
 
+const addComment = async(req, res) => {
+    try {
+        const id = req.user.id;
+        const { userId, postId } = req.params;
+        if (id != userId) return res.status(501).json({message : "permission denied"});
+        const { message } = req.body;
+        const user = await User.findById(userId);
+        if (!user) return res.status(501).json({message : "No such User in our database"});
+        const {picturePath, firstName, lastName} = user;
+        console.log(picturePath, firstName, lastName);
+        const post = await Post.findById(postId);
+        if (!post) return res.status(501).json({message : "No such post in our database"});
+        post.comments.push({picturePath, firstName, lastName, message});
+        await post.save();
+        res.status(201).json(post);
+    }
+    catch(error) {
+        res.status(501).json({message : error.message});
+    }
+}
+
 module.exports = {
     createPost,
     getPosts,
     getUserPost,
-    likeOrDislike
+    likeOrDislike,
+    addComment
 };

@@ -6,7 +6,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { setFollowed } from "../../reducer";
 import { useState } from "react";
 import { Followers } from "./followers";
-import { Following } from './followings'
+import { Followed } from './followings'
+import { MyModal } from "../../components/modalComponent";
 
 export const UserInfo = ({ imagePath, name, followed, followers, userId, location, NumberPub }) => {
 
@@ -19,7 +20,6 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
     const token = useSelector(state => state.token);
     const istAFollowed = visitor.following.includes(userId);
     const isMine = visitorId === userId;
-    const handleClose = () => setOpen(false);
     const [followersOrFollowing, setfollowersOrFollowing] = useState('');
     
     const followAndUnfollow = async() => {
@@ -43,6 +43,7 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
             console.log(error);
         }
     }
+    
     const showFriends = (params) => {
         setOpen(true);
         setfollowersOrFollowing(params)
@@ -60,7 +61,8 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                     <Typography
                         sx={{
                             fontFamily: "monospace",
-                            fontSize: "30px"
+                            fontSize: "30px",
+                            textTransform : "uppercase"
                         }}
                     >
                         {name}
@@ -69,14 +71,23 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                         <Typography
                             sx={{
                                 fontFamily: "monospace",
-                                fontSize: "20px"
+                                fontSize: "20px",
+                                "&:hover": {
+                                    color : "blue",
+                                    cursor : "pointer"
+                                },
+                                
                             }}
                             onClick = {() => showFriends('following')}
-                        >{followed?.length} following </Typography>
+                        >{followed?.length} followeds </Typography>
                         <Typography
                             sx={{
                                 fontFamily: "monospace",
-                                fontSize: "18px"
+                                fontSize: "18px",
+                                "&:hover": {
+                                    color : "blue",
+                                    cursor : "pointer"
+                                },
                             }}
                             onClick = {() => showFriends('followers')}
                         >{followers?.length} followers </Typography>
@@ -109,37 +120,22 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                     <Typography> <LocationOnIcon/> {location} </Typography>
                 </Box>
             </Box>
-            <Dialog
-                open = {open}
-                onClose={handleClose}
-                sx= {{
-                    width : "100%",
-                    margin : "auto",
-                    height : "auto"
-                }}
-            >
-
-                <DialogContent
-                    sx= {{
-                        width : "100%"
-                    }}
-                >
-                    {  
-                        followersOrFollowing == "following" ? (
-                        <Following 
+            <MyModal open={open} setOpen={setOpen} title={followersOrFollowing}>
+                { 
+                followersOrFollowing == "following" ? (
+                    <Followed 
+                        userId={userId}
+                    >
+                    </Followed>  )
+                    : 
+                    (
+                        <Followers
                             userId={userId}
                         >
-                        </Following>  )
-                        : 
-                        (
-                            <Followers
-                                userId={userId}
-                            >
-                            </Followers>
-                        )
-                    }   
-                </DialogContent>
-            </Dialog>
+                        </Followers>
+                    )
+                }   
+            </MyModal>
         </WrapComponent>
     )
 }

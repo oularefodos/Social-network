@@ -4,10 +4,12 @@ import {
     Typography,
     useMediaQuery,
     Button,
+    Alert,
 } from '@mui/material'
 import { useState } from 'react';
 import LoginForm from './loginForm';
 import SignupForm from './signupForm';
+import { Snackbar } from '@material-ui/core';
 
 export const Login = () => {
 
@@ -16,6 +18,8 @@ export const Login = () => {
     const width = isLargeScreen ? "450px" : "80%" ;
     const [isLoginPage, setIsLoginPage] = useState(true);
     const changePageBtnName = isLoginPage ? ("I don't have a account, click to regiter") : ("Have you a account, click to Login ");
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
 
     return (
         <Box 
@@ -31,6 +35,11 @@ export const Login = () => {
         }}
         backgroundColor = {theme.palette.secondary.main}
         >
+            <Snackbar open={open} autoHideDuration={3000} onClose={() => setOpen(false)}>
+                <Alert severity="error" >
+                    {message}
+                </Alert>
+            </Snackbar>
             <Typography
                 sx={{
                     fontFamily: "",
@@ -43,7 +52,7 @@ export const Login = () => {
             </Typography>
             <Box>
                 {
-                    isLoginPage ? <LoginForm/> : <SignupForm setIsLoginPage={setIsLoginPage}/>
+                    isLoginPage ? <LoginForm setOpen={setOpen} setMessage={setMessage} /> : <SignupForm setIsLoginPage={setIsLoginPage} setOpen={setOpen} setMessage={setMessage} />
                 }
                 <Typography 
                     onClick={() => setIsLoginPage(!isLoginPage)}
