@@ -1,15 +1,15 @@
 import WrapComponent from "../../components/wrapComponent"
-import { useTheme, Box, useMediaQuery, Typography, Button, Dialog, DialogContent } from '@mui/material'
+import { useTheme, Box, useMediaQuery, Typography, Button} from '@mui/material'
 import { UserProfileImage } from "../../components/userProfileImage";
 import { useSelector, useDispatch } from 'react-redux';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { setFollowed } from "../../reducer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Followers } from "./followers";
 import { Followed } from './followings'
 import { MyModal } from "../../components/modalComponent";
 
-export const UserInfo = ({ imagePath, name, followed, followers, userId, location, NumberPub }) => {
+export const UserInfo = ({ userId, NumberPub }) => {
 
     const theme = useTheme();
     const ismobile = useMediaQuery("(max-width: 900px)");
@@ -21,6 +21,9 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
     const istAFollowed = visitor.following.includes(userId);
     const isMine = visitorId === userId;
     const [followersOrFollowing, setfollowersOrFollowing] = useState('');
+    const [user, setUser] = useState(null);
+    const allFollowers = isMine ? visitor.followers : user?.followers;
+    const allFollowing = isMine ? visitor.following : user?.following;
     
     const followAndUnfollow = async() => {
         try {
@@ -44,11 +47,31 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
         }
     }
     
+    const getUser = async() => {
+        try {
+            const response = await fetch (`http://localhost:3001/user/${userId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            if (response.ok) {
+                const Newuser = await response.json();
+                setUser(Newuser);
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+    })
+
+    
     const showFriends = (params) => {
         setOpen(true);
         setfollowersOrFollowing(params)
-        console.log(followersOrFollowing);
     }
+    
     return (
         <WrapComponent backgroundColor={theme.palette.secondary.main}>
             <Box sx={{
@@ -56,7 +79,7 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                 alignItems: "top",
                 gap: ismobile ? "1rem" : "4rem",
             }}>
-                <UserProfileImage size={"100px"} imagePath={imagePath}></UserProfileImage>
+                <UserProfileImage size={"100px"} imagePath={user?.picturePath}></UserProfileImage>
                 <Box>
                     <Typography
                         sx={{
@@ -65,7 +88,7 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                             textTransform : "uppercase"
                         }}
                     >
-                        {name}
+                        {`${user?.firstName} ${user?.lastName}`}
                     </Typography>
                     <Box display="flex" alignItems="center" gap="1rem" flexWrap="wrap">
                         <Typography
@@ -79,7 +102,7 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                                 
                             }}
                             onClick = {() => showFriends('following')}
-                        >{followed?.length} followeds </Typography>
+                        >{allFollowing?.length} followeds </Typography>
                         <Typography
                             sx={{
                                 fontFamily: "monospace",
@@ -90,7 +113,7 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                                 },
                             }}
                             onClick = {() => showFriends('followers')}
-                        >{followers?.length} followers </Typography>
+                        >{allFollowers?.length} followers </Typography>
                         <Typography
                             sx={{
                                 fontFamily: "monospace",
@@ -117,12 +140,12 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                         </Button>
                         )
                     }
-                    <Typography> <LocationOnIcon/> {location} </Typography>
+                    <Typography> <LocationOnIcon/> {user?.location} </Typography>
                 </Box>
             </Box>
             <MyModal open={open} setOpen={setOpen} title={followersOrFollowing}>
                 { 
-                followersOrFollowing == "following" ? (
+                followersOrFollowing === "following" ? (
                     <Followed 
                         userId={userId}
                     >
@@ -134,7 +157,7 @@ export const UserInfo = ({ imagePath, name, followed, followers, userId, locatio
                         >
                         </Followers>
                     )
-                }   
+                }
             </MyModal>
         </WrapComponent>
     )

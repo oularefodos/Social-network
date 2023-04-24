@@ -3,8 +3,6 @@ import { Box, useTheme } from "@mui/system";
 import { useSelector } from "react-redux"
 import { Friend } from "../../components/Freind";
 import WrapComponent from "../../components/wrapComponent";
-import { Margin } from "@mui/icons-material";
-
 
 export const Followed = ({userId}) => {
 

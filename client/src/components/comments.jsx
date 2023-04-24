@@ -6,8 +6,8 @@ export const Comments = ({comments}) => {
     return (
         <Box>
             {
-              comments.map(({picturePath, firstName, lastName, message}) => (
-                <Box margin="1rem">
+              comments.map(({picturePath, firstName, lastName, message}, index) => (
+                <Box margin="1rem" key={index}>
                     <Box display="flex" alignItems="start" gap="1rem">
                         <UserProfileImage size="50px" imagePath={picturePath}></UserProfileImage>
                         <Box backgroundColor={theme.palette.secondary.main} padding="1rem" borderRadius="20px">

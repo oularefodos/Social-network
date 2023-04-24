@@ -79,7 +79,7 @@ export const PostComponent = ({
                 picturePath && (
                     <Box width='100%' marginTop='1rem' marginBottom='1rem'>
                         <img src={picturePath} width='100%' height='auto' ></img>
-                    </Box>
+                    </Box> 
                 )
             }
             <Divider />

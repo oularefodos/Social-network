@@ -32,7 +32,6 @@ export const Navbar = () => {
     const token = useSelector((state)=> state?.token);
     const theme = useTheme();
     const bckMobileMenu = theme.palette.secondary.light;
-
     const HandleIconClick = (path) =>  {
         navigate(path);
         setMenuIsOpen(!menuIsOpen);
@@ -55,9 +54,6 @@ export const Navbar = () => {
                     <FlexComponent color="white" gap="2rem">
                         <IconButton onClick={() => navigate("/home")}>
                             <Home/>
-                        </IconButton>
-                        <IconButton>
-                            <Message />
                         </IconButton>
                         <IconButton onClick={() => navigate(`/profile/${user._id}`)}>
                             <Person/>
@@ -106,10 +102,7 @@ export const Navbar = () => {
                             <IconButton onClick={() => HandleIconClick("/home")}>
                                 <Home/>
                             </IconButton>
-                            <IconButton onClick={() => HandleIconClick("/home") }>
-                                <Message />
-                            </IconButton >
-                            <IconButton onClick={() => HandleIconClick("/home") }>
+                            <IconButton onClick={() =>  navigate(`/profile/${user._id}`)} >
                                 <Person/>
                             </IconButton>
                             <IconButton onClick={() => {

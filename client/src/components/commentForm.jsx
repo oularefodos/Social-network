@@ -16,7 +16,7 @@ export const CommentForm = ({postId, commentIsOpen}) => {
     const [message, setMessage] = useState("");
 
     const addComment = async() => {
-        if (message == "") return ;
+        if (message === "") return ;
         try {
             const response = await fetch(`http://localhost:3001/posts/comment/${userId}/${postId}`, {
                 method: 'PATCH',
@@ -28,7 +28,7 @@ export const CommentForm = ({postId, commentIsOpen}) => {
             });
             const newPost = await response.json();
             dispatch(setPost({post : newPost}));
-            console.log(newPost);
+            setMessage("");
         }
         catch (error) {
             console.log(error, "Error -- ERRor")
@@ -53,6 +53,7 @@ export const CommentForm = ({postId, commentIsOpen}) => {
                     padding : '1rem',
                     borderRadius : '2rem'
                 }}
+                value={message}
                 onChange={(e) => setMessage(e.target.value)}
             >
             </InputBase>

@@ -19,7 +19,6 @@ export const Followers = ({userId}) => {
                 }
             });
             const UserFollowers = await response.json();
-            console.log(UserFollowers, "fode")
             setFollowers(UserFollowers);
         }
         catch (error) {

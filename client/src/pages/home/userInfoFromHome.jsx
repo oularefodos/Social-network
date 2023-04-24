@@ -3,16 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { UserProfileImage } from '../../components/userProfileImage';
 import {LocationOn } from "@mui/icons-material";
 import WrapComponent from '../../components/wrapComponent';
-import { useNavigate } from 'react-router-dom'
 import { setUser } from "../../reducer"
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const UserInfoFromHome = () => {
     const user = useSelector(state => state.user);
     const token = useSelector(state => state.token);
     const theme = useTheme();
     const dispatch = useDispatch();
-    const Navigate = useNavigate()
+    const navigate = useNavigate();
 
     const getUser = async() => {
         try {
@@ -47,9 +47,14 @@ export const UserInfoFromHome = () => {
                     <UserProfileImage size='60px' imagePath={user.picturePath} />
                     <Typography
                         sx={{
+                            "&:hover": {
+                                color : "blue",
+                                cursor : "pointer"
+                            },
                             fontWeight : '400',
                             textTransform : 'uppercase'
                         }}
+                        onClick={() => navigate(`/profile/${user._id}`)}
                     >
                         {user.firstName} {user.lastName}
                     </Typography>

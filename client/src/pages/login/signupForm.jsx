@@ -53,7 +53,7 @@ const SignupForm = ({setIsLoginPage, setMessage, setOpen}) => {
             }
         }
         catch (error) {
-            // console.log(error)
+            console.log(error)
         }
         onSubmitProps.resetForm();
     }

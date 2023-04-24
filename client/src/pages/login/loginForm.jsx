@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { TextField, Button } from '@mui/material';
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom'
-import {setLogin, setFollowed, setFollowers} from "../../reducer"
+import {setLogin} from "../../reducer"
 
 const formSchema = yup.object().shape({
     email : yup.string().email("invalid").required("required"),
