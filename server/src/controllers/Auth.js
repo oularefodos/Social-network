@@ -17,6 +17,13 @@ const register = async (req, res) => {
             impressions,
             viewProfile
         } = req.body;
+        const existingUser = await User.findOne({email : email});
+        if (existingUser) {
+            return res.status(400).json({message: "Email already exists"});
+        }
+        if (password.length < 8) {
+            return res.status(400).json({message: "password too short"});
+        }
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
         const newUser = new User({

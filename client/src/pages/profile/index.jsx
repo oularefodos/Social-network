@@ -3,7 +3,7 @@ import { Box,
     useMediaQuery 
    } from '@mui/material';
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { PostsComponent } from '../../components/postsComponent';
 import { UserInfo } from './userInfo';

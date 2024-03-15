@@ -1,4 +1,4 @@
-import { Box, useTheme, Typography, TextField, Button, InputBase, Divider, Input } from '@mui/material';
+import { Box, useTheme, Typography, Button, InputBase, Divider} from '@mui/material';
 import { useSelector, useDispatch  } from 'react-redux';
 import { setPosts } from '../../reducer'
 import FlexComponent from '../../components/flexComponent';

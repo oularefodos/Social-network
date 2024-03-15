@@ -39,6 +39,7 @@ const LoginForm = ({setOpen, setMessage}) => {
             }
             else {
                 const error = await response.json();
+                console.log(error.message);
                 setMessage(error.message);
                 setOpen(true);
             }

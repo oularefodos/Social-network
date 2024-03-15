@@ -16,6 +16,7 @@ export const UserProfileImage = ({size, imagePath}) => {
                     width : size,
                     overflow: "hidden",
                 }}
+                alt={imagePath}
                 src = {imagePath}
             >
 

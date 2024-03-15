@@ -42,14 +42,11 @@ const SignupForm = ({setIsLoginPage, setMessage, setOpen}) => {
             {
                 setIsLoginPage(true);
             }
-            else
-            {
+            else {
                 const error = await response.json();
-                if (error.keyValue.email)
-                {
-                    setMessage("email already used");
-                    setOpen(true);
-                }
+                console.log(error.message);
+                setMessage(error.message);
+                setOpen(true);
             }
         }
         catch (error) {
