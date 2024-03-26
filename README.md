@@ -22,3 +22,22 @@ In the development of the mini social network project, Redux Toolkit is utilized
 
 By leveraging Redux Toolkit, the mini social network project achieves robust state management, enabling the implementation of complex functionalities such as login, registration, commenting, and follow/unfollow.
 
+## Quick Start
+
+1. **Clone the Repository**
+   ```sh
+   git clone git@github.com:oularefodos/Social-network.git
+2. **Navigate to the Server Directory and Set Up Environment Variables**
+   ```sh
+   PORT=<port>
+   DATABASE_URL=<mongodb uri>
+   JWT_SECRET=<your jwt secret>
+3. **Run the server**
+   ```sh
+   npm install
+   npm start
+4. **Navigate to the Client Directory and Run the Client**
+   ```sh
+   npm install
+   npm start
+
